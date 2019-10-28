@@ -1,0 +1,13 @@
+# Explanation float_neg
+
+All that this program required was to check if the input was Not a Number, and then, if not, use an exclusive or with 0x80000000. This number just changes the sign bit of the input to the opposite.
+
+
+# Explanation float_i2f
+
+First the program has to check for edge cases, which in this case are 0 and 0x80000000. Then The sign bit is set and the absolute value of x is attained to use in the rest of the program. The exponent is set to the bias, 127, plus the highest possible amount of shifts. In the while loop, the exponent is found through finding the amount of shifts that x needs to get the MSB into index 31. This will also set up the mantissa which is found in the next bit of code. Then a rounding error is accounted for, by shifting out the MSB and then all other bits. If the number is over under halfway or halfway and odd, then the number is rounded away.
+
+# Explanation for float_twice
+
+First, after the different parts of the float are obtained, the input is tested to see if it is NaN, (which for some reason in this programs tests includes a number that does not pass one of the tests from float_neg and so the NaN test is different than float_neg). Then if the exponent is found to be 0, the mantissa is shifted 1 and then returned with the sign bit. If the exponent is not 0, the exponent is shifted and then the sign, exponent, and mantissa are returned.
+
