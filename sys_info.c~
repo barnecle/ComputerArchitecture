@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+
+char* parent = "I am a parent";
+char* child = "I am a child";
+
+int main(){
+  
+  char buf[30];
+  int p[2], pid, nbytes;
+
+  memset(buf, 0, 30);
+
+  printf("Parent ID: %d\n", getpid());
+  
+  if(pipe(p) < 0)
+    {
+      perror("pipe");
+      exit(EXIT_FAILURE);
+    }
+
+  if((pid = fork()) > 0){
+    close(p[0]);
+    write(p[1], "I am a child", 12);
+    close(p[1]);
+    wait(NULL);
+  }else{
+    printf("Child ID: %d\n", getpid());
+    while(read(p[0], buf, 1)==1){
+      printf("CHILD read from pipe -- %s\n", buf);
+      close(p[0]);
+      exit(EXIT_SUCCESS);
+    }
+
+  
+
+}
