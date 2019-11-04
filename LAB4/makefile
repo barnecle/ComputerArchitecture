@@ -1,5 +1,5 @@
 clean:
-	-rm *.o *.c~
+	-rm pthreads_sum fork_sum
 pthreads_sum_expanded:
 	gcc -D SZ=10000 -D N_THREADS=50 pthreads_sum.c -o pthreads_sum -lpthread
 pthreads_sum:
