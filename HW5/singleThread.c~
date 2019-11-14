@@ -1,0 +1,31 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main(){
+int count = 0;
+  char* helper = NULL;
+  FILE *fp;
+  size_t len = 0;
+  ssize_t read;
+  char *buf;
+  char *needle = "football";
+  fp = fopen("/u/barnecle/E201-Fall-2019/HW5/clickstream-enwiki-2019-09.tsv", "r");
+  if(fp == NULL){
+    exit(EXIT_FAILURE);
+  }
+ while((read = getline(&buf, &len, fp)) != -1){
+   helper = strstr(buf, needle);
+   buf = helper;
+   if(helper != NULL){
+     while(helper != NULL && helper>8){
+       count ++;
+       helper = strstr(buf, needle);
+       buf = helper;
+     }
+   }
+ }
+
+ printf("String footbal found %d times", count);
+}
+
