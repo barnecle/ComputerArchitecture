@@ -13,6 +13,7 @@ int main(){
   int count2 = countfile(sfile, sneedle);
  printf("String football found %d times\n", count);
  printf("String username found %d times\n", count2);
+ fflush(stdout);
  exit(0);
 }
 
