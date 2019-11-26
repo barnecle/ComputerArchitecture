@@ -1,0 +1,80 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <pthread.h>
+#include <semaphore.h>
+
+float stockval;
+float a = 0.345;
+int j = 0;
+sem_t s1;
+sem_t s2;
+
+void *read(){
+  int i;
+  int k;
+
+  while(j != 16){
+	
+	for(k=0; k<8; k++){
+		  sem_wait(&s1);
+		  for(i = 0; i<5; i++){
+ 	   	  printf("\t\tThread %d Stock Value = %f\n", pthread_self(), stockval);
+	   	  fflush(stdout);
+		  }
+		  sem_post(&s1);
+   	 }
+
+	  sem_post(&s2);
+	  sem_wait(&s1);
+
+  }
+	
+}
+void *write(){
+  int i;
+  int k;
+  for(i = 0; i<4; i++){
+	sem_wait(&s2);
+	stockval = (float)rand() * a;
+	printf("Thread %d writing value %f\n", pthread_self(), stockval);
+	j++;
+	for(k = 0; k <8; k++){
+        	sem_post(&s1);
+        }
+  }
+  if(j == 15){
+	for(i = 0; i <8; i++){
+	sem_post(&s1);
+	}
+  }
+}
+
+int main(){
+  pthread_t writers[12];
+  pthread_t readers[8];
+  int i;
+  sem_init(&s1, 1, 0);
+  sem_init(&s2, 1, 1);
+
+
+  for(i = 0; i<12; i++){
+     if(i<4){
+	pthread_create(&writers[i], NULL, &write, NULL);
+     }else{
+	 pthread_create(&writers[i], NULL, &read, NULL);
+     }
+  }
+  /*for(i = 0; i<8; i++){
+        pthread_create(&readers[i], NULL, &read, NULL);
+  }*/
+  for(i = 0; i<12; i++){
+        pthread_join(writers[i], NULL);
+  }
+  /*for(i = 0; i<8; i++){
+        pthread_join(readers[i], NULL);
+  }*/
+  sem_destroy(&s1);
+  sem_destroy(&s2);
+
+  exit(0);
+}
