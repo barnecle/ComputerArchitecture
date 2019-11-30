@@ -1,0 +1,3 @@
+1. When fork() is called, the child process splits off right at that point in the program. Any data in the program that is declared or defined before the function call is duplicated in the child process, along with the instructions after fork().
+
+2. The wait() function is useful, because often the parent process finishes beforethe child process, so if the wait function is not used the parent process will exit the function and the child process will not finish executing. If the wait() function is used, then the child process can execute and then after the processes are done, the program is exited.
