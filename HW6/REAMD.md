@@ -1,0 +1,1 @@
+Only the first two characters, A and B printed out, and then the program then stalls and does not print anymore or exit. It is waiting for the last thread to execute and then join so the program can exit.
